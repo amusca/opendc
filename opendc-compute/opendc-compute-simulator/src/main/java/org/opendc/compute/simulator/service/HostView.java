@@ -35,7 +35,6 @@ public class HostView {
     long availableMemory;
     int provisionedCores;
     Instant becomesAvailable;
-
     double carbonIntensity;
 
     /**
@@ -101,6 +100,8 @@ public class HostView {
         becomesAvailable = newTimeBecomesAvailable;
         return becomesAvailable;
     }
+
+    public double getCarbonIntensity(){return carbonIntensity;}
 
     @Override
     public String toString() {

@@ -113,9 +113,6 @@ public class FilterScheduler(
                 filteredHosts
             }
 
-        // refilter the hosts based on the availability time and the carbon at the time of scheduling
-        
-
         // fixme: currently finding no matching hosts can result in an error
         val maxSize = min(subsetSize, subset.size)
         if (maxSize == 0) {

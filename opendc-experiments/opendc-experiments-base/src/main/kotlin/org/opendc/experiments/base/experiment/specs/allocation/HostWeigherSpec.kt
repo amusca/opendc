@@ -28,6 +28,7 @@ import org.opendc.compute.simulator.scheduler.weights.CoreRamWeigher
 import org.opendc.compute.simulator.scheduler.weights.HostWeigher
 import org.opendc.compute.simulator.scheduler.weights.InstanceCountWeigher
 import org.opendc.compute.simulator.scheduler.weights.RamWeigher
+import org.opendc.compute.simulator.scheduler.weights.SpatialShifterWeigher
 import org.opendc.compute.simulator.scheduler.weights.VCpuCapacityWeigher
 import org.opendc.compute.simulator.scheduler.weights.VCpuWeigher
 
@@ -71,6 +72,12 @@ public data class VCpuWeigherSpec(
     val multiplier: Double = 1.0,
 ) : HostWeigherSpec()
 
+@Serializable
+@SerialName("SpatialShifter")
+public data class SpatiaShifterSpec(
+    val multiplier: Double = 1.0,
+): HostWeigherSpec()
+
 public fun createHostWeigher(weigherSpec: HostWeigherSpec): HostWeigher {
     return when (weigherSpec) {
         is RamWeigherSpec -> RamWeigher(weigherSpec.multiplier)
@@ -78,5 +85,6 @@ public fun createHostWeigher(weigherSpec: HostWeigherSpec): HostWeigher {
         is InstanceCountWeigherSpec -> InstanceCountWeigher(weigherSpec.multiplier)
         is VCpuCapacityWeigherSpec -> VCpuCapacityWeigher(weigherSpec.multiplier)
         is VCpuWeigherSpec -> VCpuWeigher(weigherSpec.multiplier)
+        is SpatiaShifterSpec -> SpatialShifterWeigher(weigherSpec.multiplier)
     }
 }
