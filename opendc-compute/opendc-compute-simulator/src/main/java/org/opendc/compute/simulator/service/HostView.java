@@ -36,6 +36,8 @@ public class HostView {
     int provisionedCores;
     Instant becomesAvailable;
 
+    double carbonIntensity;
+
     /**
      * Scheduler bookkeeping
      * Use by schedulers which use a priority queue data structure
@@ -60,6 +62,7 @@ public class HostView {
     public HostView(SimHost host) {
         this.host = host;
         this.availableMemory = host.getModel().memoryCapacity();
+        this.carbonIntensity = host.getCarbonIntensity();
     }
 
     /**

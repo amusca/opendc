@@ -61,6 +61,7 @@ public class SimHost(
     private val embodiedCarbon: Double,
     private val expectedLifetime: Double,
     private val powerDistributor: FlowDistributor,
+    private val carbonIntensity: Double
 ) : AutoCloseable {
     /**
      * The event listeners registered with this host.
@@ -203,6 +204,10 @@ public class SimHost(
 
     public fun getGuests(): List<Guest> {
         return this.guests.toList()
+    }
+
+    public fun getCarbonIntensity(): Double {
+        return carbonIntensity
     }
 
     public fun canFit(task: ServiceTask): Boolean {

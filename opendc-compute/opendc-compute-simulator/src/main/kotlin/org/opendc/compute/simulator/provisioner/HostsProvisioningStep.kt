@@ -130,6 +130,7 @@ public class HostsProvisioningStep internal constructor(
                         hostSpec.embodiedCarbon,
                         hostSpec.expectedLifetime,
                         hostDistributor,
+                        simPowerSource.carbonIntensity
                     )
 
                 require(simHosts.add(simHost)) { "Host with name ${hostSpec.name} already exists" }
