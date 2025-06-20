@@ -101,7 +101,10 @@ public class HostView {
         return becomesAvailable;
     }
 
-    public double getCarbonIntensity(){return carbonIntensity;}
+    public double getCarbonIntensity(){
+        carbonIntensity = host.getCarbonIntensity();
+        return carbonIntensity;
+    }
 
     @Override
     public String toString() {

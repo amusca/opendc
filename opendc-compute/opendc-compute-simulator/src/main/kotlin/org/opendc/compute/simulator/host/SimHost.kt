@@ -35,6 +35,7 @@ import org.opendc.simulator.compute.cpu.CpuPowerModel
 import org.opendc.simulator.compute.machine.SimMachine
 import org.opendc.simulator.compute.models.MachineModel
 import org.opendc.simulator.compute.models.MemoryUnit
+import org.opendc.simulator.compute.power.SimPowerSource
 import org.opendc.simulator.engine.engine.FlowEngine
 import org.opendc.simulator.engine.graph.FlowDistributor
 import java.time.Duration
@@ -61,7 +62,7 @@ public class SimHost(
     private val embodiedCarbon: Double,
     private val expectedLifetime: Double,
     private val powerDistributor: FlowDistributor,
-    private val carbonIntensity: Double
+    private val powerSource: SimPowerSource
 ) : AutoCloseable {
     /**
      * The event listeners registered with this host.
@@ -207,7 +208,7 @@ public class SimHost(
     }
 
     public fun getCarbonIntensity(): Double {
-        return carbonIntensity
+        return powerSource.carbonIntensity
     }
 
     public fun canFit(task: ServiceTask): Boolean {

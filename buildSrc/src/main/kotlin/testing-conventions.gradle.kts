@@ -44,7 +44,7 @@ dependencies {
 
 tasks.register<Test>("testsOn18") {
     javaLauncher.set(javaToolchains.launcherFor {
-        languageVersion.set(JavaLanguageVersion.of(18))
+        languageVersion.set(JavaLanguageVersion.of(21))
     })
 
     useJUnitPlatform()
@@ -56,7 +56,7 @@ tasks.register<Test>("testsOn18") {
 
 tasks.register<Test>("testsOn19") {
     javaLauncher.set(javaToolchains.launcherFor {
-        languageVersion.set(JavaLanguageVersion.of(19))
+        languageVersion.set(JavaLanguageVersion.of(21))
     })
 
     useJUnitPlatform()
