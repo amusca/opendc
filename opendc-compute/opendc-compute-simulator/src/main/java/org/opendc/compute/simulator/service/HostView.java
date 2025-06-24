@@ -23,6 +23,7 @@
 package org.opendc.compute.simulator.service;
 
 import org.opendc.compute.simulator.host.SimHost;
+import org.opendc.simulator.compute.power.CarbonModel;
 
 import java.time.Instant;
 
@@ -35,10 +36,9 @@ public class HostView {
     long availableMemory;
     int provisionedCpuCores;
     int provisionedGpuCores;
-
     Instant becomesAvailable;
-
     double carbonIntensity;
+    CarbonModel carbonModel;
 
     /**
      * Scheduler bookkeeping
@@ -105,6 +105,11 @@ public class HostView {
     public Instant setBecomesAvailable(Instant newTimeBecomesAvailable) {
         becomesAvailable = newTimeBecomesAvailable;
         return becomesAvailable;
+    }
+
+    public CarbonModel getCarbonModel() {
+        carbonModel = host.getCarbonModel();
+        return carbonModel;
     }
 
     public double getCarbonIntensity(){

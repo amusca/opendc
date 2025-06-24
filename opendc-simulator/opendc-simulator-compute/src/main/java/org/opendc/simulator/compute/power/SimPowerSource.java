@@ -207,6 +207,10 @@ public final class SimPowerSource extends FlowNode implements FlowSupplier, Carb
         this.carbonModel = carbonModel;
     }
 
+    public CarbonModel getCarbonModel() {
+        return this.carbonModel;
+    }
+
     @Override
     public void removeCarbonModel(CarbonModel carbonModel) {
         this.carbonModel = null;

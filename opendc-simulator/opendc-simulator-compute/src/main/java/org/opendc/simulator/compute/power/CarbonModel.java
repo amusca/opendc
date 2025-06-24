@@ -134,6 +134,7 @@ public class CarbonModel extends FlowNode {
     }
 
     public double[] getForecast(int forecastSize) {
+
         return this.fragments
                 .subList(
                         Math.min(this.fragment_index + 1, this.fragments.size() - 1),

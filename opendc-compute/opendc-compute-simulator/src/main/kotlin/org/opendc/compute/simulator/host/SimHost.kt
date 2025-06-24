@@ -37,6 +37,7 @@ import org.opendc.compute.simulator.telemetry.HostSystemStats
 import org.opendc.simulator.compute.machine.SimMachine
 import org.opendc.simulator.compute.models.MachineModel
 import org.opendc.simulator.compute.models.MemoryUnit
+import org.opendc.simulator.compute.power.CarbonModel
 import org.opendc.simulator.compute.power.PowerModel
 import org.opendc.simulator.engine.engine.FlowEngine
 import org.opendc.simulator.engine.graph.FlowDistributor
@@ -225,6 +226,10 @@ public class SimHost(
 
     public fun getCarbonIntensity(): Double {
         return powerSource.carbonIntensity
+    }
+
+    public fun getCarbonModel(): CarbonModel {
+        return powerSource.carbonModel
     }
 
     public fun canFit(task: ServiceTask): Boolean {
