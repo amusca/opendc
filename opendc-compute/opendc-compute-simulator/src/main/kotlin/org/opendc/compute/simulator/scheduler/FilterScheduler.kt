@@ -100,6 +100,8 @@ public class FilterScheduler(
 
                     for ((i, weight) in result.weights.withIndex()) {
                         weights[i] += factor * (weight - min)
+                        if(weights[i] < 0)
+                            weights[i] *= -1.0
                     }
                 }
 
@@ -120,7 +122,7 @@ public class FilterScheduler(
         } else {
             iter.remove()
             //return SchedulingResult(SchedulingResultType.SUCCESS, subset[random.nextInt(maxSize)], req)
-            //subset.sortedBy { it.becomesAvailable }
+            subset.sortedBy { it.becomesAvailable }
             return SchedulingResult(SchedulingResultType.SUCCESS, subset[0], req)
         }
     }

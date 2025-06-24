@@ -55,6 +55,8 @@ public interface HostWeigher {
 
         for ((i, host) in hosts.withIndex()) {
             val weight = getWeight(host, task)
+            if (i == 0)
+                max = weight
             weights[i] = weight
             min = kotlin.math.min(min, weight)
             max = kotlin.math.max(max, weight)
