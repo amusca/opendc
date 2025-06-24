@@ -24,6 +24,7 @@ package org.opendc.experiments.base.experiment.specs.allocation
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.opendc.compute.simulator.scheduler.filters.CarbonFilter
 import org.opendc.compute.simulator.scheduler.filters.ComputeFilter
 import org.opendc.compute.simulator.scheduler.filters.DifferentHostFilter
 import org.opendc.compute.simulator.scheduler.filters.HostFilter
@@ -41,6 +42,7 @@ public enum class HostFilterEnum {
     SameHost,
     VCpuCapacity,
     VCpu,
+    Carbon,
 }
 
 /**
@@ -98,6 +100,12 @@ public data class VCpuHostFilterSpec(
     val allocationRatio: Double = 1.0,
 ) : HostFilterSpec()
 
+@Serializable
+@SerialName("Carbon")
+public data class CarbonHostFilterSpec(
+    val filterName: HostFilterEnum = HostFilterEnum.Carbon,
+) : HostFilterSpec()
+
 public fun createHostFilter(filterSpec: HostFilterSpec): HostFilter {
     return when (filterSpec) {
         is ComputeFilterSpec -> ComputeFilter()
@@ -107,5 +115,6 @@ public fun createHostFilter(filterSpec: HostFilterSpec): HostFilter {
         is RamHostFilterSpec -> RamFilter(filterSpec.allocationRatio)
         is VCpuCapacityHostFilterSpec -> VCpuCapacityFilter()
         is VCpuHostFilterSpec -> VCpuFilter(filterSpec.allocationRatio)
+        is CarbonHostFilterSpec -> CarbonFilter()
     }
 }

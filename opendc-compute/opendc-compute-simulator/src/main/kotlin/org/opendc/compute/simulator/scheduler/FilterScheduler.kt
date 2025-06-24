@@ -119,7 +119,9 @@ public class FilterScheduler(
             return SchedulingResult(SchedulingResultType.FAILURE, null, req)
         } else {
             iter.remove()
-            return SchedulingResult(SchedulingResultType.SUCCESS, subset[random.nextInt(maxSize)], req)
+            //return SchedulingResult(SchedulingResultType.SUCCESS, subset[random.nextInt(maxSize)], req)
+            //subset.sortedBy { it.becomesAvailable }
+            return SchedulingResult(SchedulingResultType.SUCCESS, subset[0], req)
         }
     }
 

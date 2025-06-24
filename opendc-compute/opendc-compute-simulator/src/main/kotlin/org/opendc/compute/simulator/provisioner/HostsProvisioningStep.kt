@@ -75,7 +75,7 @@ public class HostsProvisioningStep internal constructor(
             if (carbonFragments != null) {
                 carbonModel = CarbonModel(engine, carbonFragments, startTime)
                 carbonModel.addReceiver(simPowerSource)
-                ctx.registry.register(serviceDomain, CarbonModel::class.java, carbonModel)
+                ctx.registry.register("$serviceDomain.${cluster.name}", CarbonModel::class.java, carbonModel)
             }
 
             if (cluster.battery != null) {
@@ -131,6 +131,7 @@ public class HostsProvisioningStep internal constructor(
                         hostSpec.embodiedCarbon,
                         hostSpec.expectedLifetime,
                         hostDistributor,
+                        simPowerSource
                     )
 
                 require(simHosts.add(simHost)) { "Host with name ${hostSpec.name} already exists" }
