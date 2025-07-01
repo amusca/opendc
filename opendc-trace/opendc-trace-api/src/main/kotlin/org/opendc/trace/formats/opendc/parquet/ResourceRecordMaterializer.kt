@@ -47,6 +47,7 @@ internal class ResourceRecordMaterializer(schema: MessageType) : RecordMateriali
     private var localGpuCapacity = 0.0
     private var localNature: String? = null
     private var localDeadline = -1L
+    private var localCluster: String = ""
 
     /**
      * Root converter for the record.
@@ -123,6 +124,12 @@ internal class ResourceRecordMaterializer(schema: MessageType) : RecordMateriali
                                     localDeadline = value
                                 }
                             }
+                        "cluster" ->
+                            object : PrimitiveConverter() {
+                                override fun addBinary(value: Binary) {
+                                    localCluster = value.toStringUsingUTF8()
+                                }
+                            }
                         else -> error("Unknown column $type")
                     }
                 }
@@ -138,6 +145,7 @@ internal class ResourceRecordMaterializer(schema: MessageType) : RecordMateriali
                 localGpuCapacity = 0.0
                 localNature = null
                 localDeadline = -1
+                localCluster = ""
             }
 
             override fun end() {}
@@ -157,6 +165,7 @@ internal class ResourceRecordMaterializer(schema: MessageType) : RecordMateriali
             localGpuCapacity,
             localNature,
             localDeadline,
+            localCluster,
         )
 
     override fun getRootConverter(): GroupConverter = root

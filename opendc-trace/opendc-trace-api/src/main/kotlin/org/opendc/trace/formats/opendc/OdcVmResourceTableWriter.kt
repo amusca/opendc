@@ -24,6 +24,7 @@ package org.opendc.trace.formats.opendc
 
 import org.apache.parquet.hadoop.ParquetWriter
 import org.opendc.trace.TableWriter
+import org.opendc.trace.conv.resourceCluster
 import org.opendc.trace.conv.resourceCpuCapacity
 import org.opendc.trace.conv.resourceCpuCount
 import org.opendc.trace.conv.resourceDeadline
@@ -55,6 +56,7 @@ internal class OdcVmResourceTableWriter(private val writer: ParquetWriter<Resour
     private var localDeadline: Long = -1
     private var localGpuCount: Int = 0
     private var localGpuCapacity: Double = Double.NaN
+    private var localCluster: String = ""
 
     override fun startRow() {
         localIsActive = true
@@ -85,6 +87,7 @@ internal class OdcVmResourceTableWriter(private val writer: ParquetWriter<Resour
                 localGpuCapacity,
                 localNature,
                 localDeadline,
+                localCluster
             ),
         )
     }
@@ -99,6 +102,7 @@ internal class OdcVmResourceTableWriter(private val writer: ParquetWriter<Resour
             resourceMemCapacity -> colMemCapacity
             resourceNature -> colNature
             resourceDeadline -> colDeadline
+            resourceCluster -> colCluster
             else -> -1
         }
     }
@@ -162,6 +166,7 @@ internal class OdcVmResourceTableWriter(private val writer: ParquetWriter<Resour
         when (index) {
             colID -> localId = value
             colNature -> localNature = value
+            colCluster -> localCluster = value
             else -> throw IllegalArgumentException("Invalid column index $index")
         }
     }
@@ -230,4 +235,5 @@ internal class OdcVmResourceTableWriter(private val writer: ParquetWriter<Resour
     private val colDeadline = 7
     private val colGpuCount = 8
     private val colGpuCapacity = 9
+    private val colCluster = 10
 }

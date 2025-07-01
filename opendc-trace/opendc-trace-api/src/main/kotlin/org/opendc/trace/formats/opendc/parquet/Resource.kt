@@ -38,4 +38,5 @@ internal data class Resource(
     val gpuCapacity: Double,
     val nature: String? = null,
     val deadline: Long = -1,
+    val cluster: String,
 )

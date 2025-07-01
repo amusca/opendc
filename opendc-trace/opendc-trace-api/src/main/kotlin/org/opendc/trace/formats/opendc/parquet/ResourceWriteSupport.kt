@@ -94,6 +94,9 @@ internal class ResourceWriteSupport : WriteSupport<Resource>() {
             consumer.addLong(record.deadline)
             consumer.endField("deadline", 7)
         }
+        consumer.startField("cluster", 10)
+        consumer.addBinary(Binary.fromCharSequence(record.cluster))
+        consumer.endField("cluster", 10)
 
         consumer.endMessage()
     }

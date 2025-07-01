@@ -52,4 +52,5 @@ public data class Task(
     val nature: String?,
     var deadline: Long,
     val trace: TraceWorkload,
+    var cluster: String,
 )

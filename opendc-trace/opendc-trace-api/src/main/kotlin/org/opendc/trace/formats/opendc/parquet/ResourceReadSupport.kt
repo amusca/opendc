@@ -31,6 +31,7 @@ import org.apache.parquet.schema.MessageType
 import org.apache.parquet.schema.PrimitiveType
 import org.apache.parquet.schema.Types
 import org.opendc.trace.TableColumn
+import org.opendc.trace.conv.resourceCluster
 import org.opendc.trace.conv.resourceCpuCapacity
 import org.opendc.trace.conv.resourceCpuCount
 import org.opendc.trace.conv.resourceDeadline
@@ -60,6 +61,7 @@ internal class ResourceReadSupport(private val projection: List<String>?) : Read
             "mem_capacity" to resourceMemCapacity,
             "nature" to resourceNature,
             "deadline" to resourceDeadline,
+            "cluster" to resourceCluster,
         )
 
     override fun init(context: InitContext): ReadContext {
@@ -123,6 +125,10 @@ internal class ResourceReadSupport(private val projection: List<String>?) : Read
                     Types
                         .optional(PrimitiveType.PrimitiveTypeName.INT64)
                         .named("deadline"),
+                    Types
+                        .required(PrimitiveType.PrimitiveTypeName.BINARY)
+                        .`as`(LogicalTypeAnnotation.stringType())
+                        .named("cluster"),
                 )
                 .named("resource")
 
@@ -160,6 +166,10 @@ internal class ResourceReadSupport(private val projection: List<String>?) : Read
                     Types
                         .optional(PrimitiveType.PrimitiveTypeName.INT64)
                         .named("deadline"),
+                    Types
+                        .required(PrimitiveType.PrimitiveTypeName.BINARY)
+                        .`as`(LogicalTypeAnnotation.stringType())
+                        .named("cluster"),
                 )
                 .named("resource")
 

@@ -101,3 +101,9 @@ public val resourceNature: String = "nature"
  */
 @JvmField
 public val resourceDeadline: String = "deadline"
+
+/**
+ * The cluster in which the task is initially scheduled.
+ */
+@JvmField
+public val resourceCluster: String = "cluster"

@@ -53,6 +53,8 @@ public class ServiceTask {
     private final TaskNature nature;
     private final Duration duration;
     private final Long deadline;
+
+    public String cluster;
     private ServiceFlavor flavor;
     public Workload workload;
 
@@ -80,7 +82,8 @@ public class ServiceTask {
             Long deadline,
             ServiceFlavor flavor,
             Workload workload,
-            Map<String, ?> meta) {
+            Map<String, ?> meta,
+            String cluster) {
         this.service = service;
         this.uid = uid;
         this.name = name;
@@ -90,6 +93,7 @@ public class ServiceTask {
         this.flavor = flavor;
         this.workload = workload;
         this.meta = meta;
+        this.cluster = cluster;
 
         this.submittedAt = this.service.getClock().instant();
     }
@@ -151,6 +155,15 @@ public class ServiceTask {
     @Nullable
     public Instant getFinishedAt() {
         return finishedAt;
+    }
+
+    @NotNull
+    public String getCluster() {
+        return cluster;
+    }
+
+    public void setCluster(@NotNull String cluster) {
+        this.cluster = cluster;
     }
 
     /**

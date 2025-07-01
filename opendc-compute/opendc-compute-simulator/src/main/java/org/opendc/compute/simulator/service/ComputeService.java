@@ -667,7 +667,8 @@ public final class ComputeService implements AutoCloseable, CarbonReceiver {
                 @NotNull Long deadline,
                 @NotNull ServiceFlavor flavor,
                 @NotNull Workload workload,
-                @NotNull Map<String, ?> meta) {
+                @NotNull Map<String, ?> meta,
+                @NotNull String cluster) {
             checkOpen();
 
             final ComputeService service = this.service;
@@ -677,7 +678,7 @@ public final class ComputeService implements AutoCloseable, CarbonReceiver {
             //                    Objects.requireNonNull(service.flavorById.get(flavor.getUid()), "Unknown flavor");
             //            ServiceTask task = new ServiceTask(service, uid, name, internalFlavor, workload, meta);
 
-            ServiceTask task = new ServiceTask(service, uid, name, nature, duration, deadline, flavor, workload, meta);
+            ServiceTask task = new ServiceTask(service, uid, name, nature, duration, deadline, flavor, workload, meta, cluster);
 
             service.taskById.put(uid, task);
 

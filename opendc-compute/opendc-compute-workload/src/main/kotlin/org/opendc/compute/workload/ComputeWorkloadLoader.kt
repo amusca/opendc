@@ -29,6 +29,7 @@ import org.opendc.simulator.compute.workload.trace.scaling.ScalingPolicy
 import org.opendc.trace.Trace
 import org.opendc.trace.conv.TABLE_RESOURCES
 import org.opendc.trace.conv.TABLE_RESOURCE_STATES
+import org.opendc.trace.conv.resourceCluster
 import org.opendc.trace.conv.resourceCpuCapacity
 import org.opendc.trace.conv.resourceCpuCount
 import org.opendc.trace.conv.resourceDeadline
@@ -139,6 +140,7 @@ public class ComputeWorkloadLoader(
         val gpuMemoryCol = reader.resolve(resourceGpuMemCapacity) // Assuming GPU memory is also present
         val natureCol = reader.resolve(resourceNature)
         val deadlineCol = reader.resolve(resourceDeadline)
+        val cluster = reader.resolve(resourceCluster)
 
         var counter = 0
         val entries = mutableListOf<Task>()
@@ -169,6 +171,8 @@ public class ComputeWorkloadLoader(
                 val uid = UUID.nameUUIDFromBytes("$id-${counter++}".toByteArray())
                 var nature = reader.getString(natureCol)
                 var deadline = reader.getLong(deadlineCol)
+                var clusterName = reader.getString(cluster)
+
                 if (deferAll) {
                     nature = "deferrable"
                     deadline = submissionTime + (3 * duration)
@@ -193,6 +197,7 @@ public class ComputeWorkloadLoader(
                         nature,
                         deadline,
                         builder.build(),
+                        clusterName.toString(),
                     ),
                 )
             }
