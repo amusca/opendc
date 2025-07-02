@@ -39,6 +39,7 @@ import org.opendc.compute.simulator.scheduler.SchedulingRequest;
 import org.opendc.simulator.compute.workload.Workload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.opendc.simulator.compute.workload.trace.TraceWorkload;
 
 /**
  * Implementation of {@link ServiceTask} provided by {@link ComputeService}.
@@ -57,6 +58,8 @@ public class ServiceTask {
     public String cluster;
     private ServiceFlavor flavor;
     public Workload workload;
+
+    private TraceWorkload traceWorkload;
 
     private final Map<String, ?> meta; // TODO: remove this
 
@@ -83,7 +86,8 @@ public class ServiceTask {
             ServiceFlavor flavor,
             Workload workload,
             Map<String, ?> meta,
-            String cluster) {
+            String cluster,
+            TraceWorkload traceWorkload) {
         this.service = service;
         this.uid = uid;
         this.name = name;
@@ -96,6 +100,7 @@ public class ServiceTask {
         this.cluster = cluster;
 
         this.submittedAt = this.service.getClock().instant();
+        this.traceWorkload = traceWorkload;
     }
 
     @NotNull
@@ -156,6 +161,9 @@ public class ServiceTask {
     public Instant getFinishedAt() {
         return finishedAt;
     }
+
+    @NotNull
+    public TraceWorkload getTraceWorkload() { return traceWorkload;}
 
     @NotNull
     public String getCluster() {

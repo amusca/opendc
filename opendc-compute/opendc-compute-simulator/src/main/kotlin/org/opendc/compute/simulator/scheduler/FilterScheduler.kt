@@ -26,6 +26,8 @@ import org.opendc.compute.simulator.scheduler.filters.HostFilter
 import org.opendc.compute.simulator.scheduler.weights.HostWeigher
 import org.opendc.compute.simulator.service.HostView
 import org.opendc.compute.simulator.service.ServiceTask
+import org.opendc.simulator.compute.workload.trace.TraceFragment
+import org.opendc.simulator.compute.workload.trace.TraceWorkload
 import java.util.SplittableRandom
 import java.util.random.RandomGenerator
 import kotlin.math.min
@@ -121,10 +123,27 @@ public class FilterScheduler(
             return SchedulingResult(SchedulingResultType.FAILURE, null, req)
         } else {
             iter.remove()
+            if(task.cluster != subset[0].host.getClusterName())
+                addDelay(req.task)
 //            return SchedulingResult(SchedulingResultType.SUCCESS, subset[random.nextInt(maxSize)], req)
 //            subset.sortedBy { it.becomesAvailable }
             return SchedulingResult(SchedulingResultType.SUCCESS, subset[0], req)
         }
+    }
+
+    public fun addDelay(
+        task: ServiceTask,
+    ) {
+        var workloadTrace = task.traceWorkload
+        val firstFragment = workloadTrace.fragments[0]
+        var delayFragment: TraceFragment;
+        if(task.duration.toHours() > 2){
+            delayFragment = TraceFragment(6000, firstFragment.cpuUsage, firstFragment.cpuCoreCount)
+        }
+        else{
+            delayFragment = TraceFragment(3000, firstFragment.cpuUsage, firstFragment.cpuCoreCount)
+        }
+        workloadTrace.addFirst(delayFragment)
     }
 
     override fun removeTask(

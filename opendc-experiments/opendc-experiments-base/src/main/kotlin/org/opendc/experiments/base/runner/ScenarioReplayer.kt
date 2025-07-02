@@ -155,6 +155,7 @@ public suspend fun ComputeService.replay(
                             workload,
                             meta,
                             entry.cluster,
+                            entry.trace,
                         )
 
                     val taskWatcher = RunningTaskWatcher()

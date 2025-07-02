@@ -58,6 +58,7 @@ import org.opendc.simulator.compute.power.CarbonReceiver;
 import org.opendc.simulator.compute.power.SimPowerSource;
 import org.opendc.simulator.compute.power.batteries.SimBattery;
 import org.opendc.simulator.compute.workload.Workload;
+import org.opendc.simulator.compute.workload.trace.TraceWorkload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -668,7 +669,8 @@ public final class ComputeService implements AutoCloseable, CarbonReceiver {
                 @NotNull ServiceFlavor flavor,
                 @NotNull Workload workload,
                 @NotNull Map<String, ?> meta,
-                @NotNull String cluster) {
+                @NotNull String cluster,
+                @NotNull TraceWorkload traceWorkload) {
             checkOpen();
 
             final ComputeService service = this.service;
@@ -678,7 +680,7 @@ public final class ComputeService implements AutoCloseable, CarbonReceiver {
             //                    Objects.requireNonNull(service.flavorById.get(flavor.getUid()), "Unknown flavor");
             //            ServiceTask task = new ServiceTask(service, uid, name, internalFlavor, workload, meta);
 
-            ServiceTask task = new ServiceTask(service, uid, name, nature, duration, deadline, flavor, workload, meta, cluster);
+            ServiceTask task = new ServiceTask(service, uid, name, nature, duration, deadline, flavor, workload, meta, cluster, traceWorkload);
 
             service.taskById.put(uid, task);
 
