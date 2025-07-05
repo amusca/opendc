@@ -138,10 +138,10 @@ public class FilterScheduler(
         val firstFragment = workloadTrace.fragments[0]
         var delayFragment: TraceFragment;
         if(task.duration.toHours() > 2){
-            delayFragment = TraceFragment(6000, firstFragment.cpuUsage, firstFragment.cpuCoreCount)
+            delayFragment = TraceFragment(2304000, firstFragment.cpuUsage, firstFragment.cpuCoreCount)
         }
         else{
-            delayFragment = TraceFragment(3000, firstFragment.cpuUsage, firstFragment.cpuCoreCount)
+            delayFragment = TraceFragment(1152000, firstFragment.cpuUsage, firstFragment.cpuCoreCount)
         }
         workloadTrace.addFirst(delayFragment)
     }
