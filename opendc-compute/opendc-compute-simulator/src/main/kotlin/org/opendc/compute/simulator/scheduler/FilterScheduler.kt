@@ -123,8 +123,8 @@ public class FilterScheduler(
             return SchedulingResult(SchedulingResultType.FAILURE, null, req)
         } else {
             iter.remove()
-            if(task.cluster != subset[0].host.getClusterName())
-                addDelay(req.task)
+//            if(task.cluster != subset[0].host.getClusterName())
+//                addDelay(req.task)
 //            return SchedulingResult(SchedulingResultType.SUCCESS, subset[random.nextInt(maxSize)], req)
 //            subset.sortedBy { it.becomesAvailable }
             return SchedulingResult(SchedulingResultType.SUCCESS, subset[0], req)
@@ -137,11 +137,13 @@ public class FilterScheduler(
         var workloadTrace = task.traceWorkload
         val firstFragment = workloadTrace.fragments[0]
         var delayFragment: TraceFragment;
+//        val taskDelay = task.duration.seconds;
+//        delayFragment = TraceFragment(taskDelay.toLong(), firstFragment.cpuUsage, firstFragment.cpuCoreCount)
         if(task.duration.toHours() > 2){
-            delayFragment = TraceFragment(2304000, firstFragment.cpuUsage, firstFragment.cpuCoreCount)
+            delayFragment = TraceFragment(768000, firstFragment.cpuUsage, firstFragment.cpuCoreCount)
         }
         else{
-            delayFragment = TraceFragment(1152000, firstFragment.cpuUsage, firstFragment.cpuCoreCount)
+            delayFragment = TraceFragment(1536000, firstFragment.cpuUsage, firstFragment.cpuCoreCount)
         }
         workloadTrace.addFirst(delayFragment)
     }

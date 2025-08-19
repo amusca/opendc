@@ -55,6 +55,8 @@ public class TimeshiftScheduler(
      */
     private val hosts = mutableListOf<HostView>()
 
+    private val clustersTimeshifter = mutableMapOf<String,ClusterTimeshifter>()
+
     init {
         require(subsetSize >= 1) { "Subset size must be one or greater" }
     }
@@ -67,6 +69,11 @@ public class TimeshiftScheduler(
 
     override fun addHost(host: HostView) {
         hosts.add(host)
+        if (!clustersTimeshifter.containsKey(host.host.getClusterName())) {
+            val newClusterTimeshifter: ClusterTimeshifter = ClusterTimeshifter(windowSize, clock, forecast, shortForecastThreshold, longForecastThreshold, forecastSize,
+                LinkedList<Double>(), 0.0, false, false, host.carbonModel)
+            clustersTimeshifter[host.host.getClusterName()] = newClusterTimeshifter
+        }
     }
 
     override fun removeHost(host: HostView) {
@@ -75,11 +82,13 @@ public class TimeshiftScheduler(
 
     override fun select(iter: MutableIterator<SchedulingRequest>): SchedulingResult {
         var result: SchedulingResult? = null
+
         for (req in iter) {
             if (req.isCancelled) {
                 iter.remove()
                 continue
             }
+            var filteredHosts: List<HostView> = hosts
 
             val task = req.task
 
@@ -90,9 +99,12 @@ public class TimeshiftScheduler(
              */
             if (task.nature.deferrable) {
                 val durInHours = task.duration.toHours()
-                if ((durInHours < 2 && !shortLowCarbon) ||
-                    (durInHours >= 2 && !longLowCarbon)
-                ) {
+                if ((durInHours < 2 && clustersTimeshifter.values.all{!it.getCurrentShortLowCarbon()}) ||
+                    (durInHours >= 2 && clustersTimeshifter.values.all{!it.getCurrentLongLowCarbon()})
+                ){
+//                if ((durInHours < 2 && !shortLowCarbon) ||
+//                    (durInHours >= 2 && !longLowCarbon)
+//                ){
                     val currentTime = clock.instant()
                     val estimatedCompletion = currentTime.plus(task.duration)
                     val deadline = Instant.ofEpochMilli(task.deadline)
@@ -101,9 +113,21 @@ public class TimeshiftScheduler(
                         continue
                     }
                 }
+                else{
+                    if(durInHours < 2) {
+                        val firstFilter = hosts.filter { host -> clustersTimeshifter[host.host.getClusterName()]!!.getCurrentShortLowCarbon() }
+                        filteredHosts = firstFilter.filter { host -> filters.all { filter -> filter.test(host, task) } }
+                    }
+                    else{
+                        val firstFilter = hosts.filter { host -> clustersTimeshifter[host.host.getClusterName()]!!.getCurrentLongLowCarbon() }
+                        filteredHosts = firstFilter.filter { host -> filters.all { filter -> filter.test(host, task) } }
+                    }
+
+                }
             }
 
-            val filteredHosts = hosts.filter { host -> filters.all { filter -> filter.test(host, task) } }
+            filteredHosts = filteredHosts.filter { host -> filters.all { filter -> filter.test(host, task) } }
+//            filteredHosts = hosts.filter { host -> filters.all { filter -> filter.test(host, task) } }
 
             val subset =
                 if (weighers.isNotEmpty()) {
